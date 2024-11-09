@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENS</title>
+    <link rel="stylesheet" href="Fgymsharkexternalcss.css">
+    <script>
+        function addtocart()
+        {
+            alert("Added to Cart!");
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"> <img src="fgymsharklogo.gif" alt="lg" width="100" height="35"></div>
+            <ul>
+                <li><a href="mens.html">MEN</a></li>
+                <li><a href="womens.php">WOMEN</a></li>
+                <li><a href="cart.html">CART</a></li>               
+                <?php
+                session_start();
+                if (isset($_SESSION['userID'])) {
+                    echo '
+                        <li id="accountButton">
+                            <a href="#" onclick="toggleAccountMenu()">ACCOUNT</a>
+                            <ul id="accountMenu" style="display: none;">
+                                <li><a href="account.php">Account Settings</a></li>
+                                <li><a href="#" onclick="logout()">Logout</a></li>
+                                <li><a href="#" onclick="deleteAccount()">Delete Account</a></li>
+                            </ul>
+                        </li>
+                    ';
+                } else {
+                    echo '<li id="loginButton"><a href="login.php">LOGIN</a></li>';
+                }
+                ?>
+            </ul>
+        </nav>
+    </header>
+    <section id="products">
+        <h2>MEN'S COLLECTIONS</h2>
+        <div class="product-container">
+            <div class="product-card">
+                <img src="mtee1.png" alt="Product 21">
+                <p>Price: $29.99</p>
+                <button class="cartib" onclick="addtocart()">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="mhood1.png" alt="Product 22">
+                <p>Price: $34.99</p>
+                <button class="cartib" onclick="addtocart()">Add to Cart</button>
+              </div>
+            <div class="product-card">
+                <img src="mshorts1.png" alt="Product 23">
+                <p>Price: $39.99</p>
+                <button class="cartib" onclick="addtocart()">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="mtank1.png" alt="Product 24">
+                <p>Price: $39.99</p>
+                <button class="cartib" onclick="addtocart()">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="mshorts2.png" alt="Product 25">
+                <p>Price: $39.99</p>
+                <button class="cartib" onclick="addtocart()">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="mhood4.png" alt="Product 26">
+                <p>Price: $39.99</p>
+                <button class="cartib" onclick="addtocart()">Add to Cart</button>
+            </div>
+          
+        </div>
+    </section>
+
+     <footer>
+        <p>&copy; 2024 GymShark. All rights reserved.</p>
+    </footer>
+</body>
+</html>

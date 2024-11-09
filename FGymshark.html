@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymShark</title>
+    <link rel="stylesheet" href="Fgymsharkexternalcss.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">GymShark</div>
+            <ul>
+                <li><a href="mens.html">MEN</a></li>
+                <li><a href="womens.html">WOMEN</a></li>
+                <li><a href="cart.html">CART</a></li>
+                
+                
+                <?php
+                session_start(); // Start session
+
+                if (isset($_SESSION['userID'])) {
+                    // User is logged in, show Account button
+                    echo '
+                        <li id="accountButton">
+                            <a href="#" onclick="toggleAccountMenu()">ACCOUNT</a>
+                            <ul id="accountMenu" style="display: none;">
+                                <li><a href="#" onclick="logout()">Logout</a></li>
+                            </ul>
+                        </li>
+                    ';
+                } else {
+                    // User is not logged in, show Login button
+                    echo '<li id="loginButton"><a href="login.php">LOGIN</a></li>';
+                }
+                ?>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <h1 style="font-size: xx-large;">Welcome to GymShark</h1>
+            <p><i>Your ultimate fitness apparel destination.</i></p>
+            <a href="#products" class="cta-button">Shop Now</a>
+        </section>
+
+        <section id="products">
+            <h2>Our Products</h2>
+            <div class="product-container">
+                <div class="product-card">
+                    <img src="mtee1.png" alt="Product 1">
+                    <h3>Product 1</h3>
+                    <p>Price: $29.99</p>
+                    <button class="cartib">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="mhood1.png" alt="Product 2">
+                    <h3>Product 2</h3>
+                    <p>Price: $34.99</p>
+                    <button class="cartib">Add to Cart</button>
+                </div>
+                
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>About Us</h2>
+            <p>We are a brand dedicated to providing high-quality fitness apparel that inspires and empowers your fitness journey.</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <form>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 GymShark. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleAccountMenu() {
+            const menu = document.getElementById('accountMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function logout() {
+            //logout
+            fetch('logout.php')
+                .then(response => response.text())
+                .then(data => {
+                    alert('Logged out successfully!');
+                    window.location.href = 'login.php'; 
+                })
+                .catch(error => {
+                    console.error('Error logging out:', error);
+                });
+        }
+    </script>
+</body>
+</html>

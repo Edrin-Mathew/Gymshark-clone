@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script>
+        function validate() { 
+            let customerType = document.querySelector('input[name="CUSTOMER"]:checked');
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            if (customerType == null) {
+                alert("Please select either Existing Customer or New Customer.");
+                return false;
+            }
+            if (username == "") {
+                alert("Please enter your username.");
+                return false;
+            }
+            if (password == "") {
+                alert("Please enter your password.");
+                return false;
+            }
+
+            document.write("Login Successful!<br>");
+            document.write("Customer Type: " + customerType.value + "<br>");
+            document.write("Username: " + username);
+            return false;
+        }
+    </script>
+</head>
+<body bgcolor="black" text="white">
+    <center>
+        <font face="arial">
+            <form name="loginForm" onsubmit="return validate()">
+                <h1 style="color: aqua;">LOGIN</h1>
+                <input type="radio" name="CUSTOMER" value="EXISTING CUSTOMER"> EXISTING CUSTOMER<br><br>
+                <input type="radio" name="CUSTOMER" value="NEW CUSTOMER"> NEW CUSTOMER<br><br>
+                <input type="text" id="username" name="username" placeholder="USERNAME"><br><br>
+                <input type="password" id="password" name="password" placeholder="PASSWORD"><br><br>
+                <input type="submit" value="Next">
+                <input type="reset" value="Reset">
+            </form>
+        </font>
+    </center>
+</body>
+</html>

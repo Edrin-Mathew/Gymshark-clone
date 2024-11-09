@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Product Stock</title>
+</head>
+<body>
+    <center>
+        <h1>You are currently accessing Gymshark's Inventory </h1>
+    <center>
+</br>
+</br>
+    <form method="POST" action="">
+        <label for="productId">Enter Product ID: </label>
+        <input type="number" name="productId" id="productId" required>
+        <button type="submit">Check Stock</button>
+    </form>
+
+    <?php
+    function checkStock($productId) {
+        if ($productId == 1) {
+            $stock = 10;  
+        } elseif ($productId == 2) {
+            $stock = 0;   
+        } else {
+            return "Product not found.";
+        }
+
+        if ($stock > 0) {
+            return "Product $productId is in stock. Quantity: $stock";
+        } else {
+            return "Product $productId is out of stock.";
+        }
+    }
+
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $productId = $_POST["productId"]; 
+        echo checkStock($productId);       
+    }
+    ?>
+</body>
+</html>

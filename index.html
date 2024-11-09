@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineBook - Movie Ticket Booking</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        .movie-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .movie-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            padding: 1rem;
+        }
+
+        .movie-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .booking-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-form h2 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CineBook</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="movie-list" id="movieList">
+        </section>
+
+        <section class="booking-form">
+            <h2>Book Your Tickets</h2>
+            <form id="bookingForm" action="http://localhost/projectGymShark/boooking.php">
+                <div class="form-group">
+                    <label for="movie">Select Movie:</label>
+                    <select id="movie" name="movie" required>
+                        <option value="">Choose a movie</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="seats">Number of Seats:</label>
+                    <input type="number" id="seats" name="seats" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <button type="submit">Book Now</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Booking Confirmation</h2>
+            <p id="bookingDetails"></p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 CineBook. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const movies = [
+            { id: 1, title: "The Matrix", description: "A computer programmer discovers a dystopian world", image: "thematrix.jpg" },
+            { id: 2, title: "Inception", description: "A thief enters the dreams of others to plant ideas", image: "inception.jpg" },
+            { id: 3, title: "Interstellar", description: "Explorers travel through a wormhole in search of a new home for humanity", image: "interstellar.jpg" },
+            { id: 4, title: "The Shawshank Redemption", description: "Two imprisoned men bond over a number of years", image: "theshawshank.jpg" }
+        ];
+
+        const movieList = document.getElementById('movieList');
+        const movieSelect = document.getElementById('movie');
+
+        movies.forEach(movie => {
+            const movieCard = document.createElement('div');
+            movieCard.classList.add('movie-card');
+            movieCard.innerHTML = `
+                <img src="${movie.image}" alt="${movie.title}">
+                <div class="movie-info">
+                    <h3>${movie.title}</h3>
+                    <p>${movie.description}</p>
+                </div>
+            `;
+            movieList.appendChild(movieCard);
+
+            const option = document.createElement('option');
+            option.value = movie.id;
+            option.textContent = movie.title;
+            movieSelect.appendChild(option);
+        });
+
+        const bookingForm = document.getElementById('bookingForm');
+        const bookingModal = document.getElementById('bookingModal');
+        const bookingDetails = document.getElementById('bookingDetails');
+        const closeModal = document.querySelector('.close');
+
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const movieId = this.movie.value;
+            const seats = this.seats.value;
+            const date = this.date.value;
+
+            const movie = movies.find(m => m.id == movieId);
+
+            bookingDetails.innerHTML = `
+                <p><strong>Movie:</strong> ${movie.title}</p>
+                <p><strong>Seats:</strong> ${seats}</p>
+                <p><strong>Date:</strong> ${date}</p>
+                <p>Thank you for booking with CineBook!</p>
+            `;
+
+            bookingModal.style.display = 'block';
+        });
+
+        closeModal.addEventListener('click', function() {
+            bookingModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target == bookingModal) {
+                bookingModal.style.display = 'none';
+            }
+        });
+
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    </script>
+</body>
+</html>
